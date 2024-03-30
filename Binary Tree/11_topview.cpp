@@ -8,6 +8,16 @@ class node{
         node* right;
 };
 
+class width_tree{
+    public:
+        int hd;
+        node* nnode;
+    width_tree(node* temp,int hd){
+        this->hd = hd;
+        nnode = temp;
+    }
+};
+
 class tree{
     public:
         node* root;
@@ -48,6 +58,7 @@ class tree{
         cout<<temp->value<<" ";
         dfs(temp->right);
     }
+    
     void bfs(node* temp){
         queue<node*> q;
         q.push(temp);
@@ -62,33 +73,44 @@ class tree{
         }
         cout<<endl;
     }
-    int diameter(node* temp,int& h){
-       int lh=0,rh=0;
-       int ld = 0,rd = 0;
-       if(temp == NULL){
-        h = 0;
-        return 0;
-       }
-       ld = diameter(temp->left,lh);
-       rd = diameter(temp->right,rh);
-       h = 1+max(lh,rh);
-       return max(lh+rh+1,max(ld,rd));
+    void top_view(node* temp){
+        unordered_map<int,int> m;
+        queue<width_tree*> q;
+        q.push(new width_tree(temp,0));
+        int mx = 0,mn = 0;
+        while(!q.empty()){
+            width_tree* t = q.front();
+            q.pop();
+            int hd = t->hd;
+            if(m.find(hd) == m.end())
+                m[hd] = t->nnode->value;
+            if(t->nnode->left)
+                q.push(new width_tree(t->nnode->left,hd-1));
+            if(t->nnode->right)
+                q.push(new width_tree(t->nnode->right,hd+1));
+            mx = max(mx,hd);
+            mn = min(mn,hd);
+        }
+        for(;mn<=mx;mn++)
+            cout<<m[mn]<<" ";
+        cout<<endl;
     }
 };
 
 int main(){
     tree t;
-    t.add_node(10);
-    t.add_node(4);
-    t.add_node(2);
-    t.add_node(5);
-    t.add_node(15);
-    t.add_node(12);
-    t.add_node(16);
+    t.add_node(6);
+    t.add_node(1);
     t.add_node(9);
-    t.add_node(11);
+    t.add_node(10);
+    t.add_node(0);
+    t.add_node(2);
+    t.add_node(3);
+    t.add_node(4);
+    t.add_node(5);
+    t.add_node(5);
     t.dfs(t.root);
     cout<<endl;
-    int h = 0;
-    cout<<t.diameter(t.root,h)<<endl;
+    t.bfs(t.root);
+    t.top_view(t.root);
 }

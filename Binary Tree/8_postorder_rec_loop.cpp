@@ -41,12 +41,33 @@ class tree{
             find_node(newnode,root);
         size++;
     }
-    void dfs(node* temp){
+    void postorder(node* temp){
         if(temp==NULL)
             return;
-        dfs(temp->left);
+        postorder(temp->left);
+        postorder(temp->right);
         cout<<temp->value<<" ";
-        dfs(temp->right);
+    }
+    void postorder_it(node* temp){
+        stack<node*> s;
+        stack<int> num;
+        if(temp == NULL)
+            return;
+        s.push(temp);
+        while(!s.empty()){
+            temp = s.top();
+            num.push(temp->value);
+            s.pop();
+            if(temp->left)
+                s.push(temp->left);
+            if(temp->right)
+                s.push(temp->right);
+        }
+        while(!num.empty()){
+            cout<<num.top()<<" ";
+            num.pop();
+        }
+        cout<<endl;
     }
     void bfs(node* temp){
         queue<node*> q;
@@ -62,18 +83,6 @@ class tree{
         }
         cout<<endl;
     }
-    int diameter(node* temp,int& h){
-       int lh=0,rh=0;
-       int ld = 0,rd = 0;
-       if(temp == NULL){
-        h = 0;
-        return 0;
-       }
-       ld = diameter(temp->left,lh);
-       rd = diameter(temp->right,rh);
-       h = 1+max(lh,rh);
-       return max(lh+rh+1,max(ld,rd));
-    }
 };
 
 int main(){
@@ -87,8 +96,7 @@ int main(){
     t.add_node(16);
     t.add_node(9);
     t.add_node(11);
-    t.dfs(t.root);
+    t.postorder(t.root);
     cout<<endl;
-    int h = 0;
-    cout<<t.diameter(t.root,h)<<endl;
+    t.postorder_it(t.root);
 }

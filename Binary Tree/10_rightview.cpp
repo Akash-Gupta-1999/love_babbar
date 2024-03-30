@@ -48,6 +48,7 @@ class tree{
         cout<<temp->value<<" ";
         dfs(temp->right);
     }
+    
     void bfs(node* temp){
         queue<node*> q;
         q.push(temp);
@@ -62,17 +63,20 @@ class tree{
         }
         cout<<endl;
     }
-    int diameter(node* temp,int& h){
-       int lh=0,rh=0;
-       int ld = 0,rd = 0;
-       if(temp == NULL){
-        h = 0;
-        return 0;
-       }
-       ld = diameter(temp->left,lh);
-       rd = diameter(temp->right,rh);
-       h = 1+max(lh,rh);
-       return max(lh+rh+1,max(ld,rd));
+    void right_viewer(node* temp, int level, int& max_level){
+        if(temp == NULL)
+            return;
+        if(max_level < level){
+            cout<<temp->value<<" ";
+            max_level = level;
+        }
+        right_viewer(temp->right,level+1,max_level);
+        right_viewer(temp->left,level+1,max_level);
+    }
+    void right_view(node* temp){
+        int max_level = 0;
+        right_viewer(temp,1,max_level);
+        cout<<endl;
     }
 };
 
@@ -89,6 +93,6 @@ int main(){
     t.add_node(11);
     t.dfs(t.root);
     cout<<endl;
-    int h = 0;
-    cout<<t.diameter(t.root,h)<<endl;
+    t.bfs(t.root);
+    t.right_view(t.root);
 }

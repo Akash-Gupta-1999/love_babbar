@@ -62,17 +62,30 @@ class tree{
         }
         cout<<endl;
     }
-    int diameter(node* temp,int& h){
-       int lh=0,rh=0;
-       int ld = 0,rd = 0;
-       if(temp == NULL){
-        h = 0;
-        return 0;
-       }
-       ld = diameter(temp->left,lh);
-       rd = diameter(temp->right,rh);
-       h = 1+max(lh,rh);
-       return max(lh+rh+1,max(ld,rd));
+    void mirroring(node* &newnode,node* left, node* right){
+        if(left!=NULL){
+            node* nodel = new node;
+            newnode->left = nodel;
+            nodel->value = left->value;
+            nodel->left = nodel->right = NULL;
+            mirroring(nodel,left->right,left->left);
+        }
+         if(right!=NULL){
+            node* noder = new node;
+            newnode->right = noder;
+            noder->value = right->value;
+            noder->left = noder->right = NULL;
+            mirroring(noder,right->right,right->left);
+        }
+    }
+    node* mirror(){
+        if(root == NULL)
+            return root;
+        node* newnode = new node;
+        newnode->value = root->value;
+        newnode->left = newnode->right = NULL;
+        mirroring(newnode,root->right,root->left);
+        return newnode;
     }
 };
 
@@ -87,8 +100,14 @@ int main(){
     t.add_node(16);
     t.add_node(9);
     t.add_node(11);
+    /*t.add_node(5);
+    t.add_node(3);
+    t.add_node(6);
+    t.add_node(2);
+    t.add_node(4);*/
     t.dfs(t.root);
     cout<<endl;
     int h = 0;
-    cout<<t.diameter(t.root,h)<<endl;
+    node* mir = t.mirror();
+    t.dfs(mir);
 }
