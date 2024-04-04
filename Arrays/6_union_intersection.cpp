@@ -14,12 +14,13 @@ void union_intersect(vector<int> a,vector<int> b){
     int n = b.size();
     for(int i=0;i<m;i++){
         s.insert(a[i]);
+        uni.push_back(a[i]);
     }  
     for(int i=0;i<n;i++){
-        if(s.find(b[i]) == s.end())
+        if(s.find(b[i]) == s.end()){
             inter.push_back(b[i]);
-        else    
             uni.push_back(b[i]);
+        }
     }
     print(uni,uni.size());
     print(inter,inter.size());
