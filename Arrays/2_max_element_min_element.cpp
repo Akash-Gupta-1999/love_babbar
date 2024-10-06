@@ -8,15 +8,10 @@ void print(vector<int> a,int n){
 }
 
 pair<int,int> getminmax(vector<int> a,int n){
-    int min = a[0];
-    int max = a[0];
-    int i = 1;
-    if(n%2 ==0){
-        if(a[0] > a[1]){
-            min = a[1];
-            max = a[0];
-        }
-        i = 2;
+    int min = INT_MAX, max = INT_MIN, i = 0;
+    if(n%2 != 0){
+        min = max = a[0];
+        i++;
     }
     while(i<n-1){
         if(a[i] > a[i+1]){
