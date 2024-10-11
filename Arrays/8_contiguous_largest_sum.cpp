@@ -7,18 +7,24 @@ void print(vector<int> a,int n){
     cout<<endl;
 }
 
-int max_sum(vector<int> a,int n){
-    int i=0;
-    while(a[i] < 0)
+int max_sum(vector<int> arr,int n){
+    int sum =0, ans = 0;
+    int i= 0, maximum = INT_MIN;
+    while(arr[i]<0 && i<arr.size()){
+        maximum = max(arr[i],maximum);
         i++;
-    int max_so_far = 0,sum = 0;
-    for(i;i<n;i++){
+    }
+    if(i == arr.size())
+        return maximum;
+    while(i<arr.size()){
+        sum+=arr[i];
+        if(sum>ans)
+            ans = sum;
         if(sum<0)
             sum = 0;
-        sum+=a[i];
-        max_so_far=max(sum,max_so_far);
+        i++;
     }
-    return max_so_far;
+    return ans;
 }
 
 int main(){

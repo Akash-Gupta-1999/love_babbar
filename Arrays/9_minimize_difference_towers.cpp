@@ -9,8 +9,10 @@ void print(vector<int> a,int n){
 
 int minimize(vector<int> a,int n,int k){
     sort(a.begin(),a.end());
+    if(a.size() == 1)
+        return 0;
     int tempmin,tempmax;
-    int mini = INT_MAX;
+    int mini = a[a.size()-1] - a[0];
     for(int i =1;i<n;i++){
         if(a[i] < k)
             continue;
